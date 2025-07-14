@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get_it/get_it.dart';
 import 'package:path_provider/path_provider.dart';
@@ -18,6 +19,7 @@ import 'package:taskify/src/domain/usecases/mark_task_complete.dart';
 import 'package:taskify/src/domain/usecases/snooze_task.dart';
 import 'package:taskify/src/domain/usecases/sort_task.dart';
 import 'package:taskify/src/domain/usecases/update_task.dart';
+import 'package:taskify/src/presentation/cubit/task_cubit.dart';
 
 final getIt = GetIt.instance;
 
@@ -26,14 +28,19 @@ void configureDependencies() {
     FlutterLocalNotificationsPlugin(),
   );
 
-  getIt.registerLazySingleton<AppDatabase>(
-    () => AppDatabase(
-      LazyDatabase(() async {
-        final dbFolder = await getApplicationDocumentsDirectory();
-        return NativeDatabase(File('${dbFolder.path}/db.sqlite'));
-      }),
-    ),
-  );
+  getIt.registerLazySingleton<AppDatabase>(() {
+    try {
+      return AppDatabase(
+        LazyDatabase(() async {
+          final dbFolder = await getApplicationDocumentsDirectory();
+          return NativeDatabase(File('${dbFolder.path}/db.sqlite'));
+        }),
+      );
+    } catch (e) {
+      debugPrint('DB init error: $e');
+      rethrow;
+    }
+  });
 
   getIt.registerLazySingleton<TaskLocalDataSource>(
     () => TaskLocalDataSourceImpl(getIt()),
@@ -55,8 +62,8 @@ void configureDependencies() {
     () => NotificationService(getIt()),
   );
 
-  getIt.registerSingleton<TaskStore>(
-    TaskStore(
+  getIt.registerSingleton<TaskCubit>(
+    TaskCubit(
       notificationService: getIt(),
       createTask: getIt(),
       deleteTask: getIt(),

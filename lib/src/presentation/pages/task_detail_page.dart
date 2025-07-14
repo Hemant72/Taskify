@@ -4,10 +4,11 @@ import 'package:intl/intl.dart';
 import 'package:taskify/core/const/colors.dart';
 import 'package:taskify/core/services/notification_service.dart';
 import 'package:taskify/src/domain/entites/task.dart';
+import 'package:taskify/src/presentation/cubit/task_cubit.dart';
 
 class TaskDetailPage extends StatelessWidget {
   final Task task;
-  final TaskStore _taskStore = GetIt.I<TaskStore>();
+  final TaskCubit _taskCubit = GetIt.I<TaskCubit>();
   final DateFormat _dateFormat = DateFormat('yyyy-MM-dd HH:mm');
 
   TaskDetailPage({super.key, required this.task});
@@ -200,7 +201,7 @@ class TaskDetailPage extends StatelessWidget {
   }
 
   void _handleCompleteTask(BuildContext context) {
-    _taskStore.completeTask(task);
+    _taskCubit.completeTask(task);
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -210,14 +211,14 @@ class TaskDetailPage extends StatelessWidget {
           label: 'Undo',
           textColor: Colors.white,
           onPressed: () =>
-              _taskStore.editTask(task.copyWith(isCompleted: false)),
+              _taskCubit.editTask(task.copyWith(isCompleted: false)),
         ),
       ),
     );
   }
 
   void _handleSnoozeTask() {
-    _taskStore.postponeTask(task);
+    _taskCubit.postponeTask(task);
     ScaffoldMessenger.of(
       NotificationService.navigatorKey.currentContext!,
     ).showSnackBar(
@@ -243,7 +244,7 @@ class TaskDetailPage extends StatelessWidget {
             style: ElevatedButton.styleFrom(backgroundColor: AppColors.error),
             onPressed: () {
               if (task.id != null) {
-                _taskStore.removeTask(task.id!);
+                _taskCubit.removeTask(task.id!);
               }
               Navigator.pop(ctx);
               Navigator.pop(context);

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:taskify/core/const/colors.dart';
 import 'package:taskify/src/domain/entites/task.dart';
+import 'package:taskify/src/presentation/cubit/task_cubit.dart';
+import 'package:taskify/src/presentation/cubit/task_state.dart';
 import 'package:taskify/src/presentation/widgets/task_item.dart';
 
 class TaskList extends StatelessWidget {
@@ -11,29 +14,27 @@ class TaskList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TaskStore taskStore = GetIt.I<TaskStore>();
-    return Observer(
-      builder: (_) {
+    final TaskCubit taskCubit = GetIt.I<TaskCubit>();
+    return BlocBuilder<TaskCubit, TaskState>(
+      bloc: taskCubit,
+      builder: (context, state) {
         final now = DateTime.now();
-        final overdueTasks = taskStore.tasks
+        final overdueTasks = state.tasks
             .where((t) => t.dueDate.isBefore(now))
             .toList();
-        final upcomingTasks = taskStore.tasks
+        final upcomingTasks = state.tasks
             .where((t) => !t.dueDate.isBefore(now))
             .toList();
-
         return CustomScrollView(
           controller: scrollController,
           slivers: [
-            if (taskStore.isLoading)
+            if (state.isLoading)
               const SliverFillRemaining(
                 child: Center(child: CircularProgressIndicator()),
               )
-            else if (taskStore.errorMessage != null)
-              SliverFillRemaining(
-                child: _buildErrorState(taskStore.errorMessage!),
-              )
-            else if (taskStore.tasks.isEmpty)
+            else if (state.errorMessage != null)
+              SliverFillRemaining(child: _buildErrorState(state.errorMessage!))
+            else if (state.tasks.isEmpty)
               SliverFillRemaining(child: _buildEmptyState())
             else ...[
               if (overdueTasks.isNotEmpty) _buildSectionHeader('Overdue Tasks'),
@@ -82,7 +83,7 @@ class TaskList extends StatelessWidget {
           confirmDismiss: (_) => _confirmDismiss(context),
           onDismissed: (_) {
             if (task.id != null) {
-              GetIt.I<TaskStore>().removeTask(task.id!);
+              GetIt.I<TaskCubit>().removeTask(task.id!);
             }
           },
           child: TaskItem(task: task),
@@ -142,7 +143,7 @@ class TaskList extends StatelessWidget {
           ElevatedButton.icon(
             icon: const Icon(Icons.refresh),
             label: const Text('Try Again'),
-            onPressed: () => GetIt.I<TaskStore>().fetchTasks(),
+            onPressed: () => GetIt.I<TaskCubit>().fetchTasks(),
           ),
         ],
       ),

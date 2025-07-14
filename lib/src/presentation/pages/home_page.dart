@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
+import 'package:taskify/src/domain/entites/task.dart';
+import 'package:taskify/src/presentation/cubit/task_cubit.dart';
+import 'package:taskify/src/presentation/widgets/task_list_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -10,14 +13,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final TaskStore _taskStore = GetIt.I<TaskStore>();
+  final TaskCubit _taskCubit = GetIt.I<TaskCubit>();
   final ScrollController _scrollController = ScrollController();
   final DateFormat _dateFormat = DateFormat('MMM dd, yyyy - hh:mm a');
 
   @override
   void initState() {
     super.initState();
-    _taskStore.fetchTasks();
+    _taskCubit.fetchTasks();
   }
 
   @override
@@ -53,7 +56,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _refreshTasks() async {
-    await _taskStore.fetchTasks();
+    await _taskCubit.fetchTasks();
   }
 
   void _showSortDialog() {
@@ -68,7 +71,7 @@ class _HomePageState extends State<HomePage> {
               title: const Text('Due Date (Ascending)'),
               leading: const Icon(Icons.arrow_upward),
               onTap: () {
-                _taskStore.sortTaskList(true);
+                _taskCubit.sortTaskList(true);
                 Navigator.pop(ctx);
               },
             ),
@@ -76,7 +79,7 @@ class _HomePageState extends State<HomePage> {
               title: const Text('Due Date (Descending)'),
               leading: const Icon(Icons.arrow_downward),
               onTap: () {
-                _taskStore.sortTaskList(false);
+                _taskCubit.sortTaskList(false);
                 Navigator.pop(ctx);
               },
             ),
@@ -256,7 +259,7 @@ class _HomePageState extends State<HomePage> {
                         tags: tags,
                         isCompleted: false,
                       );
-                      _taskStore.addTask(newTask);
+                      _taskCubit.addTask(newTask);
                       Navigator.pop(ctx);
                     }
                   },

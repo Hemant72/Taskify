@@ -3,12 +3,12 @@ import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:taskify/core/const/colors.dart';
 import 'package:taskify/src/domain/entites/task.dart';
+import 'package:taskify/src/presentation/cubit/task_cubit.dart';
 import 'package:taskify/src/presentation/pages/task_detail_page.dart';
-
 
 class TaskItem extends StatelessWidget {
   final Task task;
-  final TaskStore _taskStore = GetIt.I<TaskStore>();
+  final TaskCubit _taskCubit = GetIt.I<TaskCubit>();
 
   TaskItem({super.key, required this.task});
 
@@ -47,7 +47,7 @@ class TaskItem extends StatelessWidget {
         confirmDismiss: (_) => _confirmDismiss(context),
         onDismissed: (_) {
           if (task.id != null) {
-            _taskStore.removeTask(task.id!);
+            _taskCubit.removeTask(task.id!);
           }
         },
         child: ListTile(
@@ -126,7 +126,7 @@ class TaskItem extends StatelessWidget {
           }
           return Colors.transparent;
         }),
-        onChanged: (_) => _taskStore.completeTask(task),
+        onChanged: (_) => _taskCubit.completeTask(task),
       ),
     );
   }

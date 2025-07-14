@@ -5,6 +5,7 @@ import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:get_it/get_it.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:taskify/src/domain/entites/task.dart';
+import 'package:taskify/src/presentation/cubit/task_cubit.dart';
 import 'package:taskify/src/presentation/pages/task_detail_page.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -107,8 +108,8 @@ class NotificationService {
         task.description,
         scheduledDate,
         notificationDetails,
-        uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.absoluteTime,
+        // uiLocalNotificationDateInterpretation:
+        //     UILocalNotificationDateInterpretation.absoluteTime,
         payload: task.id.toString(),
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       );
@@ -122,8 +123,8 @@ class NotificationService {
           task.description,
           tz.TZDateTime.from(task.dueDate, tz.local),
           notificationDetails,
-          uiLocalNotificationDateInterpretation:
-              UILocalNotificationDateInterpretation.absoluteTime,
+          // uiLocalNotificationDateInterpretation:
+              // UILocalNotificationDateInterpretation.absoluteTime,
           payload: task.id.toString(),
           androidScheduleMode: AndroidScheduleMode.inexact,
         );
@@ -146,8 +147,8 @@ class NotificationService {
   }
 
   void _navigateToTask(int taskId) {
-    final taskStore = GetIt.I<TaskStore>();
-    taskStore.getTaskById(taskId).then((result) {
+    final taskCubit = GetIt.I<TaskCubit>();
+    taskCubit.getTaskById(taskId).then((result) {
       result.fold(
         (failure) => debugPrint('Failed to get task: $failure'),
         (task) => navigatorKey.currentState?.push(
@@ -161,20 +162,20 @@ class NotificationService {
       GlobalKey<NavigatorState>();
 
   Future<void> handleNotificationAction(String action, int taskId) async {
-    final taskStore = GetIt.I<TaskStore>();
-    final task = await taskStore.fetchTaskById(taskId);
+    final taskCubit = GetIt.I<TaskCubit>();
+    final task = await taskCubit.fetchTaskById(taskId);
 
     await task.fold(
       (failure) async => debugPrint('Failed to handle action: $failure'),
       (task) async {
         switch (action) {
           case 'complete_action':
-            await taskStore.completeTask(task);
+            await taskCubit.completeTask(task);
             await cancelNotification(taskId);
             break;
           case 'snooze_action':
             final newDueDate = DateTime.now().add(const Duration(hours: 1));
-            await taskStore.editTask(task.copyWith(dueDate: newDueDate));
+            await taskCubit.editTask(task.copyWith(dueDate: newDueDate));
             await cancelNotification(taskId);
             await scheduleTaskNotification(task.copyWith(dueDate: newDueDate));
             break;

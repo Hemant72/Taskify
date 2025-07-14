@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'task_cubit.dart';
+part of 'task_state.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,30 +14,63 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TaskState {
 
-
+ List<task.Task> get tasks; bool get isLoading; String? get errorMessage;
+/// Create a copy of TaskState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$TaskStateCopyWith<TaskState> get copyWith => _$TaskStateCopyWithImpl<TaskState>(this as TaskState, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TaskState);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TaskState&&const DeepCollectionEquality().equals(other.tasks, tasks)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
 }
 
 
 @override
-int get hashCode => runtimeType.hashCode;
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(tasks),isLoading,errorMessage);
 
 @override
 String toString() {
-  return 'TaskState()';
+  return 'TaskState(tasks: $tasks, isLoading: $isLoading, errorMessage: $errorMessage)';
 }
 
 
 }
 
 /// @nodoc
-class $TaskStateCopyWith<$Res>  {
-$TaskStateCopyWith(TaskState _, $Res Function(TaskState) __);
+abstract mixin class $TaskStateCopyWith<$Res>  {
+  factory $TaskStateCopyWith(TaskState value, $Res Function(TaskState) _then) = _$TaskStateCopyWithImpl;
+@useResult
+$Res call({
+ List<task.Task> tasks, bool isLoading, String? errorMessage
+});
+
+
+
+
+}
+/// @nodoc
+class _$TaskStateCopyWithImpl<$Res>
+    implements $TaskStateCopyWith<$Res> {
+  _$TaskStateCopyWithImpl(this._self, this._then);
+
+  final TaskState _self;
+  final $Res Function(TaskState) _then;
+
+/// Create a copy of TaskState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? tasks = null,Object? isLoading = null,Object? errorMessage = freezed,}) {
+  return _then(_self.copyWith(
+tasks: null == tasks ? _self.tasks : tasks // ignore: cast_nullable_to_non_nullable
+as List<task.Task>,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
+as bool,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
 }
 
 
@@ -55,11 +88,10 @@ extension TaskStatePatterns on TaskState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _TaskState value)?  $default,{TResult Function( _Initial value)?  initial,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _TaskState value)?  $default,{required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case _Initial() when initial != null:
-return initial(_that);case _TaskState() when $default != null:
+case _TaskState() when $default != null:
 return $default(_that);case _:
   return orElse();
 
@@ -78,11 +110,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _TaskState value)  $default,{required TResult Function( _Initial value)  initial,}){
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _TaskState value)  $default,){
 final _that = this;
 switch (_that) {
-case _Initial():
-return initial(_that);case _TaskState():
+case _TaskState():
 return $default(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -100,11 +131,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _TaskState value)?  $default,{TResult? Function( _Initial value)?  initial,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _TaskState value)?  $default,){
 final _that = this;
 switch (_that) {
-case _Initial() when initial != null:
-return initial(_that);case _TaskState() when $default != null:
+case _TaskState() when $default != null:
 return $default(_that);case _:
   return null;
 
@@ -122,10 +152,9 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<task.Task> tasks,  bool isLoading,  String? errorMessage)?  $default,{TResult Function()?  initial,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<task.Task> tasks,  bool isLoading,  String? errorMessage)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case _Initial() when initial != null:
-return initial();case _TaskState() when $default != null:
+case _TaskState() when $default != null:
 return $default(_that.tasks,_that.isLoading,_that.errorMessage);case _:
   return orElse();
 
@@ -144,10 +173,9 @@ return $default(_that.tasks,_that.isLoading,_that.errorMessage);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<task.Task> tasks,  bool isLoading,  String? errorMessage)  $default,{required TResult Function()  initial,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<task.Task> tasks,  bool isLoading,  String? errorMessage)  $default,) {final _that = this;
 switch (_that) {
-case _Initial():
-return initial();case _TaskState():
+case _TaskState():
 return $default(_that.tasks,_that.isLoading,_that.errorMessage);case _:
   throw StateError('Unexpected subclass');
 
@@ -165,10 +193,9 @@ return $default(_that.tasks,_that.isLoading,_that.errorMessage);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<task.Task> tasks,  bool isLoading,  String? errorMessage)?  $default,{TResult? Function()?  initial,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<task.Task> tasks,  bool isLoading,  String? errorMessage)?  $default,) {final _that = this;
 switch (_that) {
-case _Initial() when initial != null:
-return initial();case _TaskState() when $default != null:
+case _TaskState() when $default != null:
 return $default(_that.tasks,_that.isLoading,_that.errorMessage);case _:
   return null;
 
@@ -180,55 +207,23 @@ return $default(_that.tasks,_that.isLoading,_that.errorMessage);case _:
 /// @nodoc
 
 
-class _Initial implements TaskState {
-  const _Initial();
-  
-
-
-
-
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Initial);
-}
-
-
-@override
-int get hashCode => runtimeType.hashCode;
-
-@override
-String toString() {
-  return 'TaskState.initial()';
-}
-
-
-}
-
-
-
-
-/// @nodoc
-
-
 class _TaskState implements TaskState {
   const _TaskState({final  List<task.Task> tasks = const [], this.isLoading = false, this.errorMessage}): _tasks = tasks;
   
 
  final  List<task.Task> _tasks;
-@JsonKey() List<task.Task> get tasks {
+@override@JsonKey() List<task.Task> get tasks {
   if (_tasks is EqualUnmodifiableListView) return _tasks;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_tasks);
 }
 
-@JsonKey() final  bool isLoading;
- final  String? errorMessage;
+@override@JsonKey() final  bool isLoading;
+@override final  String? errorMessage;
 
 /// Create a copy of TaskState
 /// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
+@override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
 _$TaskStateCopyWith<_TaskState> get copyWith => __$TaskStateCopyWithImpl<_TaskState>(this, _$identity);
 
@@ -254,7 +249,7 @@ String toString() {
 /// @nodoc
 abstract mixin class _$TaskStateCopyWith<$Res> implements $TaskStateCopyWith<$Res> {
   factory _$TaskStateCopyWith(_TaskState value, $Res Function(_TaskState) _then) = __$TaskStateCopyWithImpl;
-@useResult
+@override @useResult
 $Res call({
  List<task.Task> tasks, bool isLoading, String? errorMessage
 });
@@ -273,7 +268,7 @@ class __$TaskStateCopyWithImpl<$Res>
 
 /// Create a copy of TaskState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? tasks = null,Object? isLoading = null,Object? errorMessage = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? tasks = null,Object? isLoading = null,Object? errorMessage = freezed,}) {
   return _then(_TaskState(
 tasks: null == tasks ? _self._tasks : tasks // ignore: cast_nullable_to_non_nullable
 as List<task.Task>,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
