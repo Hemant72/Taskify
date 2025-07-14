@@ -1,5 +1,7 @@
 # taskify
 
+[Download the APK](https://drive.google.com/file/d/1u2a_PCLpIO8rJBMDmxaLamjp0JdT_1Ca/view?usp=sharing)
+
 A new Flutter project.
 
 ## Getting Started
